@@ -6,6 +6,7 @@ import Post from "@/pages/Post";
 import Login from "@/pages/Login";
 import Cadastro from "@/pages/Cadastro";
 import { Image } from "react-native";
+import OutroUser from "@/pages/OutroUser";
 
 const Tab = createBottomTabNavigator();
 
@@ -64,6 +65,18 @@ export default function RootLayout() {
         <Tab.Screen 
           name='Post' 
           component={Post} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Image
+                source={require('@/assets/images/post.png')}
+                style={{ width: size, height: size, tintColor: color }}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen 
+          name='OutroUser' 
+          component={OutroUser} 
           options={{
             tabBarIcon: ({ color, size }) => (
               <Image
