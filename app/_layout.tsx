@@ -1,37 +1,79 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Feeds from "@/pages/Feeds";
+import Profile from "@/pages/Profile";
+import Post from "@/pages/Post";
+import Login from "@/pages/Login";
+import Cadastro from "@/pages/Cadastro";
+import { Image } from "react-native";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+const Tab = createBottomTabNavigator();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <NavigationContainer independent={true}>
+      <Tab.Navigator initialRouteName="Login">
+        <Tab.Screen 
+          name="Login" 
+          component={Login} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Image
+                source={require('@/assets/images/user.png')}
+                style={{ width: size, height: size, tintColor: color }}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen 
+          name="Cadastro" 
+          component={Cadastro} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Image
+                source={require('@/assets/images/register.png')}
+                style={{ width: size, height: size, tintColor: color }}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name='Feed'
+          component={Feeds}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Image
+                source={require('@/assets/images/feed.png')}
+                style={{ width: size, height: size, tintColor: color }}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen  
+          name='Editar' 
+          component={Profile}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Image
+                source={require('@/assets/images/edit.png')}
+                style={{ width: size, height: size, tintColor: color }}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen 
+          name='Post' 
+          component={Post} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Image
+                source={require('@/assets/images/user.png')}
+                style={{ width: size, height: size, tintColor: color }}
+              />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
