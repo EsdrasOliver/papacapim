@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 export default function Feed() {
@@ -8,7 +9,9 @@ export default function Feed() {
                     source={require('../assets/images/pexels-danxavier-1239291.jpg')}
                     style={{width:50, height:50,borderRadius: 50}}
                 />
-                <Text>Usuario 1</Text>
+                <Link href="/Profile">
+                    <Text>Usuario 1</Text>
+                </Link>   
             </View>
             <View>
                 <Image

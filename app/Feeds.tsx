@@ -1,6 +1,6 @@
 import Feed from "@/components/Feed";
 import { useState } from "react";
-import { Image, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, View } from "react-native";
 
 export default function Feeds() {
     const [focusedInput, setFocusedInput] = useState<string>('')
@@ -11,12 +11,7 @@ export default function Feeds() {
   
             <StatusBar />
             <Feed />
-            <Feed />
-            <Feed />
-            <Feed />
-            <Feed />
-            <Feed />
-            <Feed />
+            
 
           </View>
           
@@ -24,6 +19,7 @@ export default function Feeds() {
         <View  style={styles.view}>
         
         </View>
+        
       </SafeAreaView>
     )
 }

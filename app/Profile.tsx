@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
@@ -37,6 +38,11 @@ export default function Profile({ navigation }: any) {
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Feed')}>
                     <Text style={styles.buttonText}>Concluir</Text>
                 </TouchableOpacity>
+                <Link href="/AlterUser" asChild>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>Alterar</Text>
+                    </TouchableOpacity>
+                </Link>
                 <TouchableOpacity style={styles.buttonBack} onPress={() => navigation.navigate('Feed')}>
                     <Text style={styles.buttonBackText}>Cancelar</Text>
                 </TouchableOpacity>
@@ -91,7 +97,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 20,
         paddingVertical: 10,
-        width: 150,
+        width: 110,
         alignItems: 'center'
     },
     buttonBack: {
@@ -101,7 +107,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 20,
         paddingVertical: 10,
-        width: 150,
+        width: 110,
         alignItems: 'center'
     },
     buttonBackText: {
