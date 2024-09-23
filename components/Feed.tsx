@@ -9,7 +9,7 @@ export default function Feed() {
                     source={require('../assets/images/pexels-danxavier-1239291.jpg')}
                     style={{width:50, height:50,borderRadius: 50}}
                 />
-                <Link href="/Profile">
+                <Link href="/AlterUser">
                     <Text>Usuario 1</Text>
                 </Link>   
             </View>

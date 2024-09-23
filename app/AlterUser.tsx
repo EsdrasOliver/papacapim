@@ -1,14 +1,15 @@
 import api from "@/api/api";
 import { AuthContext } from "@/contexts/AuthProvider";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useContext, useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function AlterUser({ navigation }: any) {
     const [focusedInput, setFocusedInput] = useState<string>('')
     const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
     const { user, setUser } = useContext(AuthContext)
 
@@ -23,16 +24,28 @@ export default function AlterUser({ navigation }: any) {
                 }
             }
             
-            await api.patch(`/users/${user?.id}`, {user})
+            await api.patch(`/users/${user?.id}`, data)
 
             setUser(data)
       
-            alert(data) 
+            alert("Usuario alterado com sucesso") 
         } catch (error) {
             console.error(error)
             alert('Login Failed')
         }
     }
+
+    const handleExcluir = async () => {
+        try {
+            await api.delete(`/users/${user?.id}`)
+        
+            router.push('/')
+        } catch (error) {
+            console.error(error)
+            alert('Login Failed')
+        }
+    }
+    
     return (
         <View style={styles.container}>
             <View style={styles.containerImagesInputs}>
@@ -68,12 +81,26 @@ export default function AlterUser({ navigation }: any) {
                     onFocus={() => setFocusedInput('password')} 
                     onBlur={() => setFocusedInput('')}
                 />
+                <TextInput 
+                    style={[styles.input, focusedInput === 'password_confirmation' && styles.focusedInput]}
+                    placeholder="Confirma a senha" 
+                    secureTextEntry
+                    value={passwordConfirmation}
+                    onChangeText={setPasswordConfirmation}
+                    onFocus={() => setFocusedInput('password_confirmation')} 
+                    onBlur={() => setFocusedInput('')}
+                />
             </View>
             <View style={styles.containerButtons}>
                 <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                     <Text style={styles.buttonText}>Concluir</Text>
                 </TouchableOpacity>
-                <Link href="/Feeds" asChild>
+                
+                    <TouchableOpacity style={styles.buttonExcluir} onPress={handleExcluir}>
+                        <Text style={styles.buttonText}>Excluir</Text>
+                    </TouchableOpacity>
+                
+                <Link href="/tabs/Feeds" asChild>
                     <TouchableOpacity style={styles.buttonBack}>
                         <Text style={styles.buttonBackText}>Cancelar</Text>
                     </TouchableOpacity>
@@ -126,6 +153,14 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#1DA1F2',
+        borderRadius: 8,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        width: 110,
+        alignItems: 'center'
+    },
+    buttonExcluir: {
+        backgroundColor: '#f21d1d',
         borderRadius: 8,
         paddingHorizontal: 20,
         paddingVertical: 10,

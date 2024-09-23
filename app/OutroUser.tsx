@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function OutroUser() {
-    const [focusedInput, setFocusedInput] = useState<string>('')
     return (
         <View style={styles.container}>
             <View style={styles.containerImagesInputs}>

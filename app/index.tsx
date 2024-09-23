@@ -6,46 +6,41 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 
 export default function Login({ navigation }: any) {
   const [focusedInput, setFocusedInput] = useState<string>('')
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
+  const [login, setLogin] = useState('Teste');
+  const [password, setPassword] = useState('123');
 
-  const {user, setUser} = useContext(AuthContext)
+  const { setUser } = useContext(AuthContext)
   const router = useRouter()
 
   useEffect(() => {
-    
+    /*
     const data: FormatUser = {
-      token: "token",
-      user_login: "qlq merda"
+      token: "",
+      user_login: ""
     }
     setUser(data)
-    
+    */
   }, [])
 
   const handleLogin = async () => {
     try {
-      const response = await api.post(
-        'sessions',
-        { login, password }
-      )
+      const response = await api.post('sessions', { login, password })
 
       if(response.data.token) {
         const data: FormatUser = {
+          id: response.data.id,
           token: response.data.token, 
           user_login: response.data.user_login || login
         }
 
-        setUser(data)
-
         api.defaults.headers['x-session-token'] = data.token
 
-        console.log(data.token)
+        setUser(data)
 
-        router.push('/tabs/index')
+        router.push('/tabs/Feeds')
       } else {
         alert('Login Failed: Invalid response')
         return false
-        
       }
     } catch (error) {
       console.error(error)
