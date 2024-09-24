@@ -6,8 +6,8 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 
 export default function Login({ navigation }: any) {
   const [focusedInput, setFocusedInput] = useState<string>('')
-  const [login, setLogin] = useState('Teste');
-  const [password, setPassword] = useState('123');
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
 
   const { setUser } = useContext(AuthContext)
   const router = useRouter()

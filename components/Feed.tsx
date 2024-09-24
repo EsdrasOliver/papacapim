@@ -10,7 +10,7 @@ export default function Feed() {
                     style={{width:50, height:50,borderRadius: 50}}
                 />
                 <Link href="/AlterUser">
-                    <Text>Usuario 1</Text>
+                    <Text>Clique aqui para alterar</Text>
                 </Link>   
             </View>
             <View>

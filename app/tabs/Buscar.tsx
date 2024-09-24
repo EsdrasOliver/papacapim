@@ -1,15 +1,24 @@
 import api from "@/api/api"
-import { useEffect, useState } from "react"
+import { AuthContext } from "@/contexts/AuthProvider"
+import { Seguindo } from "@/hooks/Seguindo"
+import { useContext, useEffect, useState } from "react"
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 export default function Buscar() {
     const [users, setUsers] = useState([])
     const [followers, setFollowers] = useState([])
 
+    const [jaSegue, setJaSegue] = useState(false)
+    const {user} = useContext(AuthContext)
+
     const getUsers = async () => {
         try {
             const response = await api.get('users')
             setUsers(response.data)
+            response.data.map((user: any) => {
+                //console.log(user.login)
+                getFollowers(user.login)
+            })
         } catch (error) {
             console.error(error)
             alert('Get Users Failed')
@@ -17,23 +26,34 @@ export default function Buscar() {
     }
 
     const getFollowers = async (login: string) => {
+        
         try {
             const response = await api.get(`/users/${login}/followers`)
 
-            setFollowers(response.data.map((follower: any) => follower.login))
+            response.data.forEach((element: any) => {
+                if(element.follower_login == user?.user_login){
+                    setJaSegue(true)
+                }
+            })
+
+            //console.log(response.data)
+
+            //setFollowers(response.data.map((follower: any) => follower.login))
         } catch (error) {
             console.error(error)
-            alert('Get Followers Failed')
+            //alert('Get Followers Failed')
         }
     }
 
     const follower = async (login: string) => {
         try {
-            await api.post(`/users/${login}/followers`)
-    
-            alert(`Seguindo ${login}`)
-
-            getFollowers(login)
+            if(jaSegue) {
+                const response = await api.delete(`/users/${user}/followers/0`)
+                if(response) setJaSegue(false)
+            } else {
+                const response = await api.post(`/users/${login}/followers`)
+                if(response) setJaSegue(true)
+            }
         } catch (error) {
             console.error(error)
             alert('Follower Failed')
@@ -70,6 +90,11 @@ export default function Buscar() {
                     <View style={styles.user} key={item.id}>
                         <Text>{item.login}</Text>
                         <Text>{item.name}</Text>
+                        <View>
+                            <TouchableOpacity style={styles.button} onPress={() => follower(item.login)}>
+                                <Text style={styles.buttonText}>Seguir</Text>
+                            </TouchableOpacity>
+                        </View>
                         
                         {/*{followers == item.login ? (
                             <TouchableOpacity style={styles.buttonNotFollower} onPress={() => notfollower(item.login)}>
