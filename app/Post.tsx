@@ -1,32 +1,48 @@
+import api from "@/api/api";
+import { Link } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function Post({ navigation }: any) {
     const [focusedInput, setFocusedInput] = useState<string>('')
+    const [mgs, setMgs] = useState('')
+
+    const handleSubmit = async () => {
+        try {
+            const post = { message: mgs }
+
+            await api.post('posts', {post})
+
+            alert('Post feito com sucesso')
+        } catch (error) {
+            console.error(error)
+            alert('Post Failed')
+        }
+    }
+
     return (
         <View style= {styles.container}>
             <View>
-                <View style={styles.containerPhoto}>
-                    <Text>Clique e escolha a foto</Text>
-                </View>
-                <View>
-                    <TextInput
-                        style={[styles.input, focusedInput === 'textarea' && styles.focusedInput]}
-                        placeholder="Digite aqui"
-                        onFocus={() => setFocusedInput('textarea')} 
-                        onBlur={() => setFocusedInput('')}
-                        multiline
-                        numberOfLines={4}
-                    />
-                </View>
+                <TextInput
+                    style={[styles.input, focusedInput === 'textarea' && styles.focusedInput]}
+                    placeholder="Digite aqui"
+                    onFocus={() => setFocusedInput('textarea')} 
+                    onBlur={() => setFocusedInput('')}
+                    multiline
+                    numberOfLines={5}
+                    value={mgs}
+                    onChangeText={setMgs}
+                />
             </View>
             <View style={styles.containerButtons}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Feed')}>
+                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                     <Text style={styles.buttonText}>Publicar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonBack} onPress={() => navigation.navigate('Feed')}>
-                    <Text style={styles.buttonBackText}>Voltar</Text>
-                </TouchableOpacity>
+                <Link href="/tabs/Feeds" asChild>
+                    <TouchableOpacity style={styles.buttonBack}>
+                        <Text style={styles.buttonBackText}>Voltar</Text>
+                    </TouchableOpacity>
+                </Link>
             </View>
         </View>
     )
@@ -47,7 +63,7 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '100%',
-        padding: 10,
+        padding: 20,
         marginBottom: 15,
         borderWidth: 2,
         borderColor: '#ccc',

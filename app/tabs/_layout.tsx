@@ -31,7 +31,6 @@ export default function _layout() {
           }} 
           name="Buscar"
         />
-        {/*<Tabs.Screen options={{headerShown: false}} name="Profile"  />*/}
       </Tabs>
     </AuthProvider>
   )

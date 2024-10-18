@@ -25,6 +25,9 @@ export default function Cadastro({ navigation }: any) {
             }
             
             await api.post('users', {user})
+
+            console.log(user)
+
       
             alert('Cadastro feito com sucesso')
         } catch (error) {
