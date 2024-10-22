@@ -21,14 +21,6 @@ export const Feed: React.FC<LoginProps> = ({ login }) => {
     const [inputValue, setInputValue] = useState('')
     const [activeFeed, setActiveFeed] = useState<number | null>(null)
 
-    /*const getPost = async () => {
-        if(login != '') {
-            const response = await api.get(`/users/${login}/posts`)
-            setFeed(response.data)
-        }
-        getFeed()
-    }*/
-
 
     /*const getLike = async (id: number) => {
         try {
@@ -53,23 +45,15 @@ export const Feed: React.FC<LoginProps> = ({ login }) => {
         return feed.filter((reply: any) => reply.post_id === postId)
     }
 
-    const getFilteredFeed = async () => {
-        const response = await api.get(`posts?search=${login}`)
-
-        const filteredFeed = response.data.filter((user: FeedProps) => user.user_login.toLowerCase().includes(login.toLowerCase()))
-        console.log('passando aqui')
-        console.log(filteredFeed)
-        setFeed(filteredFeed)
-    }
-
     const getFeed = async () => {
         try {
+            const response = await api.get('posts')
             if (login === "") {
-                const response = await api.get('posts?page=2')
-                
                 setFeed(response.data)
             } else {
-                getFilteredFeed()
+                const filteredFeed = response.data.filter((user: FeedProps) => user.user_login.toLowerCase().includes(login.toLowerCase()))
+                
+                setFeed(filteredFeed)
             }
         } catch (error) {
             console.error(error)
@@ -101,14 +85,7 @@ export const Feed: React.FC<LoginProps> = ({ login }) => {
 
     useEffect(() => {
         getFeed()
-        //getPost()
     }, [login])
-
-    /*useEffect(() => {
-        feed.forEach((item: FeedProps) => {
-            getLike(item.id)
-        });
-    }, [feed])*/
 
     return (
         <View>
