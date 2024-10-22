@@ -9,12 +9,11 @@ export default function Profile({ navigation }: any) {
             <View style={styles.containerImagesInputs}>
                 <View style={styles.containerEditImage}>
                     <Image
-                        source={require('../assets/images/pexels-danxavier-1239291.jpg')}
+                        source={require('../assets/images/user.png')}
                         style={styles.profile}
                     />
                     <Text>Editar foto</Text>
                 </View>
-                
                 <TextInput
                     style={[styles.input, focusedInput === 'name' && styles.focusedInput]}
                     placeholder="Nome"
@@ -38,11 +37,11 @@ export default function Profile({ navigation }: any) {
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Feed')}>
                     <Text style={styles.buttonText}>Concluir</Text>
                 </TouchableOpacity>
-                <Link href="/AlterUser" asChild>
-                    <TouchableOpacity style={styles.button}>
+                {/*<Link href="/AlterUser" asChild>
+                    <TouchableOpacity style={styles.buttonAlter}>
                         <Text style={styles.buttonText}>Alterar</Text>
                     </TouchableOpacity>
-                </Link>
+                </Link>*/}
                 <TouchableOpacity style={styles.buttonBack} onPress={() => navigation.navigate('Feed')}>
                     <Text style={styles.buttonBackText}>Cancelar</Text>
                 </TouchableOpacity>
@@ -94,6 +93,14 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#1DA1F2',
+        borderRadius: 8,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        width: 110,
+        alignItems: 'center'
+    },
+    buttonAlter: {
+        backgroundColor: '#1d56f2',
         borderRadius: 8,
         paddingHorizontal: 20,
         paddingVertical: 10,

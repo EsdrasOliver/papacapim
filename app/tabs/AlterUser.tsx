@@ -51,7 +51,7 @@ export default function AlterUser({ navigation }: any) {
             <View style={styles.containerImagesInputs}>
                 <View style={styles.containerEditImage}>
                     <Image
-                        source={require('../assets/images/pexels-danxavier-1239291.jpg')}
+                        source={require('../../assets/images/user.png')}
                         style={styles.profile}
                     />
                     <Text>Editar foto</Text>

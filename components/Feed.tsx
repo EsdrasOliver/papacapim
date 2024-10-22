@@ -1,35 +1,76 @@
 import api from "@/api/api";
 import { Entypo } from "@expo/vector-icons";
-import { Link } from "expo-router";
-import { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-export default function Feed() {
+interface FeedProps {
+    created_at: string, 
+    id: number, 
+    post_id: number, 
+    updated_at: string, 
+    user_login: string
+}
+
+interface LoginProps {
+    login: string
+}
+
+export const Feed: React.FC<LoginProps> = ({ login }) => {
     
-    const [feed, setFeed] = useState([])
-
-    //const [showInput, setShowInput] = useState(false)
+    const [feed, setFeed] = useState<FeedProps[]>([])
     const [inputValue, setInputValue] = useState('')
     const [activeFeed, setActiveFeed] = useState<number | null>(null)
+
+    /*const getPost = async () => {
+        if(login != '') {
+            const response = await api.get(`/users/${login}/posts`)
+            setFeed(response.data)
+        }
+        getFeed()
+    }*/
+
+
+    /*const getLike = async (id: number) => {
+        try {
+            const response = await api.get(`posts/${id}/likes`)
+            setLike(response.data)
+            console.log(feed)
+        } catch (error) {
+            console.error(error)
+            alert('Like Failed')
+        }
+    }*/
 
   
     const handleSend = (id: number) => {
         if (inputValue.trim()) {
             handleSubmit(id, inputValue)
             setInputValue('')
-            //setShowInput(false)
         }
     }
 
     const getRepliesForPost = (postId: number) => {
-        return feed.filter((reply: any) => reply.post_id === postId);
+        return feed.filter((reply: any) => reply.post_id === postId)
+    }
+
+    const getFilteredFeed = async () => {
+        const response = await api.get(`posts?search=${login}`)
+
+        const filteredFeed = response.data.filter((user: FeedProps) => user.user_login.toLowerCase().includes(login.toLowerCase()))
+        console.log('passando aqui')
+        console.log(filteredFeed)
+        setFeed(filteredFeed)
     }
 
     const getFeed = async () => {
         try {
-            const response = await api.get('posts')
-            setFeed(response.data)
-            console.log(feed)
+            if (login === "") {
+                const response = await api.get('posts?page=2')
+                
+                setFeed(response.data)
+            } else {
+                getFilteredFeed()
+            }
         } catch (error) {
             console.error(error)
             alert('Feed Failed')
@@ -42,14 +83,32 @@ export default function Feed() {
                 message: msg
             }
         }
-        //console.log(message)
-        //console.log(id)
+        
         await api.post(`posts/${id}/replies`, message)
+        getFeed()
+    }
+
+    const deletePost = async (id: number) => {
+        try {
+            await api.delete(`posts/${id}`)
+            alert('Post deleted')
+            getFeed()
+        } catch (error) {
+            console.error(error)
+            alert('Delete Post Failed')
+        }
     }
 
     useEffect(() => {
         getFeed()
-    }, [])
+        //getPost()
+    }, [login])
+
+    /*useEffect(() => {
+        feed.forEach((item: FeedProps) => {
+            getLike(item.id)
+        });
+    }, [feed])*/
 
     return (
         <View>
@@ -69,9 +128,11 @@ export default function Feed() {
                             {/*<Entypo
                                 name="heart-outlined" color="red" size={20}
                             />*/}
-                            <Entypo
-                                name="cup" color="#a09d9d" size={20}
-                            />
+                            <TouchableOpacity onPress={() => deletePost(r.id)}>
+                                <Entypo
+                                    name="cup" color="#a09d9d" size={20}
+                                />
+                            </TouchableOpacity>
                         </View>
                     </View>
                     {activeFeed === r.id ? (
@@ -98,7 +159,6 @@ export default function Feed() {
                         </View>
                     ))}
                 </View>
-                
             ))}
         </View>
     )

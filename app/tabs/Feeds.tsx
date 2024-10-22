@@ -1,30 +1,43 @@
-import api from "@/api/api";
-import Feed from "@/components/Feed";
-import { AuthContext } from "@/contexts/AuthProvider";
+import {Feed} from "@/components/Feed";
 import { Entypo } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { useContext, useEffect, useState } from "react";
-import { Image, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
+import { Image, SafeAreaView, ScrollView, StatusBar, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function Feeds() {
-  const {user} = useContext(AuthContext)
-
+  const [focusedInput, setFocusedInput] = useState<string>('')
+  const [login, setLogin] = useState<string>("")
   
-
   const handleSubmit = () => {
     router.push('/Post')
   }
 
-  useEffect(() => {
-    console.log(user)
-  })
+  const search = (login: string) => {
+    setLogin(login)
+  }
   
   return ( 
     <SafeAreaView style={styles.container}>
+      <View style={styles.containerInputButton}>
+        <TextInput 
+          style={[styles.input, focusedInput === 'login' && styles.focusedInput]}
+          placeholder="Login"
+          value={login}
+          onChangeText={setLogin}
+          onFocus={() => setFocusedInput('login')} 
+          onBlur={() => setFocusedInput('')}
+        />
+        <TouchableOpacity style={styles.buttonSearch} onPress={() => search(login)}>
+          <Image 
+            source={require('../../assets/images/search.png')}
+            style={{ width: 15, height: 15, tintColor: '#fff' }}
+          />
+        </TouchableOpacity>
+      </View>
       <ScrollView>
         <View>
           <StatusBar />
-          <Feed />
+          <Feed login={login} />
         </View>
       </ScrollView>
       <View  style={styles.view}>
@@ -43,6 +56,28 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     flex: 1,
     backgroundColor: '#fff',
+  },
+  containerInputButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  input: {
+    width: '80%',
+    padding: 5,
+    borderWidth: 2,
+    borderColor: '#ccc',
+    borderRadius: 5
+  },
+  focusedInput: {
+    borderColor: '#1DA1F2',
+  },
+  buttonSearch: {
+    borderRadius: 8,
+    backgroundColor: '#1DA1F2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '15%',
   },
   view: {
     padding: 10,

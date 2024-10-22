@@ -31,6 +31,18 @@ export default function _layout() {
           }} 
           name="Buscar"
         />
+        <Tabs.Screen 
+          options={{
+            headerShown: false, 
+            tabBarIcon: () => (
+              <Image 
+                source={require('../../assets/images/user.png')}
+                style={{ width: 24, height: 24 }}
+              />
+            )
+          }} 
+          name="AlterUser"
+        />
       </Tabs>
     </AuthProvider>
   )

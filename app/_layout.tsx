@@ -10,7 +10,6 @@ export default function _layout() {
         <Stack.Screen options={{headerShown: false}} name="Cadastro" />
         <Stack.Screen name="Post" />
         <Stack.Screen name="OutroUser" />
-        <Stack.Screen name="AlterUser" />
       </Stack>
     </AuthProvider>
   )

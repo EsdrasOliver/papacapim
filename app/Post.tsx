@@ -1,5 +1,5 @@
 import api from "@/api/api";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
@@ -12,6 +12,8 @@ export default function Post({ navigation }: any) {
             const post = { message: mgs }
 
             await api.post('posts', {post})
+
+            router.push('/tabs/Feeds')
 
             alert('Post feito com sucesso')
         } catch (error) {
@@ -72,7 +74,6 @@ const styles = StyleSheet.create({
     focusedInput: {
         borderColor: '#1DA1F2',
     },
-
     containerButtons: {
         gap: 10,
         width: '100%',
